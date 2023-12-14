@@ -5,7 +5,7 @@
 ## A description of the project: 
 - What it does
 - The aim of the project
-- What you learned
+- What I've learnt
 
 ## Installation instructions
     .yaml
@@ -19,6 +19,7 @@
 
 ## File structure of the project
 
+- Project Log: Contains journey log of all steps taken
 
 
 ## Data 
