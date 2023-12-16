@@ -1,5 +1,6 @@
 # Pinterest Data Pipeline
 
+Pinterest crunches billions of data points every day to decide how to provide more value to their users. This project emulates a similar system utilising AWS Cloud for analysing real-time and historical data.
 
 ## Table of Contents
 ## A description of the project: 
@@ -19,7 +20,8 @@
 
 ## File structure of the project
 
-- Project Log: Contains journey log of all steps taken
+- Project Log: Contains a journey log of all steps taken.
+- user_posting emulation.py : A script which emulates the stream of POST requests by users on Pinterest. 
 
 
 ## Data 
@@ -45,6 +47,9 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 > Example data:
 
     {'ind': 7528, 'first_name': 'Abigail', 'last_name': 'Ali', 'age': 20, 'date_joined': datetime.datetime(2015, 10, 24, 11, 23, 51)}
+
+
+### The Pipeline 
 
 
 
