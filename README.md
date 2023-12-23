@@ -6,22 +6,24 @@ Pinterest crunches billions of data points every day to decide how to provide mo
 ## A description of the project: 
 - What it does
 - The aim of the project
-- What I've learnt
+- Reflection
 
 ## Installation instructions
-    .yaml
+   For conda environment dependencies the `pinterest_pipeline.yaml` can be cloned. 
+   
 
 ## Usage instructions
-1.
+1. Due to confidential information on AWS and Databricks account access, this project cannot be run by others directly, however can function as a step by step guide on replicating the pipeline.  
 2.
 3.
-4.
-5.
 
 ## File structure of the project
 
 - Project Log: Contains a journey log of all steps taken.
-- user_posting emulation.py : A script which emulates the stream of POST requests by users on Pinterest. 
+- user_posting emulation.py : A script which emulates the stream of POST requests by users on Pinterest.
+- data_frame_creation_from_s3_bucket.ipynb : 
+- cleaning_df_batch_data.ipynb :
+- querying_batch_data.ipynb :
 
 
 ## Data 
@@ -50,6 +52,46 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 
 
 ### The Pipeline 
+
+
+
+
+
+
+### Steps taken
+
+Details of steps taken can be found in the `project_log.ipynb`file. 
+
+1. 
+
+2. 
+
+3. 
+
+4. 
+
+5. 
+
+6. Mounting AWS S3 bucket onto Databricks, detailed steps can be seen in `data_frame_creation_from_s3_bucket.ipynb` file
+
+7. Cleaning the three dataframes: 
+    - df_pin
+    - df_geo 
+    - df_user 
+    detailed steps can be found in `cleaning_df_batch_data.ipynb` file
+
+8. Querying batch data on Databricks using pyspark, detailed steps can be seen in `querying_batch_data.ipynb` file. Queries were as follows:
+    1. Find the most popular Pinterest category people post to based on their country.
+    2. Find the most popular category in each year between 2018 and 2022
+    3. Find the user with most followers in each country
+    4. What is the most popular category people post to for different age groups?
+    5. What is the median follower count for users in different age groups?
+    6. Find how many users have joined each year between 2015 and 2020
+    7. Find the median follower count of users based on their joining year between 2015 and 2020.
+    8. Find the median follower count of users based on their joining year and age group for 2015 to 2020.  
+
+  
+
 
 
 
