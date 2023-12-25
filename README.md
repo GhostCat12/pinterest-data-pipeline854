@@ -64,15 +64,18 @@ Details of steps taken can be found in the `project_log.ipynb`file.
 
 1. 
 
-2. 
+2. Exploring the Pinterest emulation data. As shown under the [Data](#data) section. 
 
-3. 
+3. Configuring EC2 Kafka client
 
-4. 
+4. Connect MSK cluster to an S3 bucket
 
-5. 
+5. Configuring API in API gateway
 
-6. Mounting AWS S3 bucket onto Databricks, detailed steps can be seen in `data_frame_creation_from_s3_bucket.ipynb` file
+6. Mounting AWS S3 bucket onto Databricks, detailed steps can be seen in `data_frame_creation_from_s3_bucket.ipynb` file:
+    1. 
+    2. 
+    3. 
 
 7. Cleaning the three dataframes: 
     - df_pin
@@ -90,9 +93,11 @@ Details of steps taken can be found in the `project_log.ipynb`file.
     7. Find the median follower count of users based on their joining year between 2015 and 2020.
     8. Find the median follower count of users based on their joining year and age group for 2015 to 2020.  
 
-  
+9. Batch processing: AWS MWAA    
+    Utilising AWS Managed Workflows for Apache Airflow (MWAA) to automate **daily** batch processing of the previously created databricks notebook.
+    Uploading the `0a60b9a8a831_dag.py` directed acyclic graph (DAG) file to the S3 bucket `mwaa-dags-bucket/dags` associated with the MWAA environment. This allows us to run the DAG from the AWS airflow UI. 
 
-
+10. 
 
 
 ## License information
