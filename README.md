@@ -97,7 +97,12 @@ Details of steps taken can be found in the `project_log.ipynb`file.
     Utilising AWS Managed Workflows for Apache Airflow (MWAA) to automate **daily** batch processing of the previously created databricks notebook.
     Uploading the `0a60b9a8a831_dag.py` directed acyclic graph (DAG) file to the S3 bucket `mwaa-dags-bucket/dags` associated with the MWAA environment. This allows us to run the DAG from the AWS airflow UI. 
 
-10. 
+10. Stream Processing: AWS Kinesis
+    Created 3 streams each sourcing data from one the 3 Pinterest data tables : 
+    1. streaming-0a60b9a8a831-pin  
+    2. streaming-0a60b9a8a831-geo    
+    3. streaming-0a60b9a8a831-user 
+
 
 
 ## License information
