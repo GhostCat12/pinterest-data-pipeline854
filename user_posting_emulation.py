@@ -90,6 +90,18 @@ def api_send_to_kafka(invoke_url, header, table_dict):
 
 
 
+def api_send_to_kinesis(invoke_url, header, table_dict, partition_key):
+   
+    #To send JSON messages you need to follow this structure
+    payload_json = json.dumps({
+        "StreamName": f"streaming-0a60b9a8a831-{partition_key}",
+        "Data": table_dict,
+        "PartitionKey": partition_key
+    })
+
+    response_result = requests.request(method="PUT", url=invoke_url, headers=header, data=payload_json)
+    print(response_result.status_code)
+
 
 
 #if __name__ == "__main__":
