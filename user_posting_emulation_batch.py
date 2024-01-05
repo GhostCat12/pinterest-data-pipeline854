@@ -11,7 +11,16 @@ headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'} #inside kafka f
  
 @run_infinite_post_data_loop
 def kafka_post(pin_result, geo_result, user_result):
-    
+    """Post data to Kafka topics using the specified API endpoints.
+
+    Args:
+        pin_result (dict): Dictionary containing Pinterest data.
+        geo_result (dict): Dictionary containing geolocation data.
+        user_result (dict): Dictionary containing user data.
+
+    Returns:
+        None
+    """
     payload_pin_result = api_send_to_kafka(invoke_url_pin_result, header=headers, table_dict=pin_result)
     payload_geo_result = api_send_to_kafka(invoke_url_geo_result, header=headers, table_dict=geo_result)
     payload_user_result = api_send_to_kafka(invoke_url_user_result, header=headers, table_dict=user_result)
