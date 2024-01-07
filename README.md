@@ -83,7 +83,7 @@ Amazon Relational Database Service is a web service that makes it easier to set 
 
 ## Pipeline architecture
 
-![](media/doc/pinterest_architecture_diagram.drawio.png)
+![](media/doc/pinterest_architecture_diagram.drawio.svg)
 
 ## File structure of the project
 
@@ -207,14 +207,15 @@ Clean the three dataframes df_pin, df_geo, df_user and query the data on databri
 ### 9. Stream Processing: AWS Kinesis
 
 1. Create 3 streams each sourcing data from one the 3 Pinterest data tables :     
-   >    - streaming-0a60b9a8a831-pin  
-   >    - streaming-0a60b9a8a831-geo    
-   >    - streaming-0a60b9a8a831-user 
+    - streaming-0a60b9a8a831-pin  
+    - streaming-0a60b9a8a831-geo    
+    - streaming-0a60b9a8a831-user 
 2. Configure your previously created REST API to allow it to invoke Kinesis actions
 3. API should be able to invoke the following actions:
-    >    - List streams in Kinesis
-    >    - Create, describe and delete streams in Kinesis
-    >    - Add records to streams in Kinesis
+    - List streams in Kinesis
+    - Create, describe and delete streams in Kinesis
+    - Add records to streams in Kinesis
+
 4. Create a new script user_posting_emulation_streaming.py to send requests to the API, which adds one tables record at a time to the coresponding kinesis streams created.
 5. Read data from Kinesis streams into Databricks
 6. Clean the streaming data in the same way as the batch data
