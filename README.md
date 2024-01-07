@@ -83,7 +83,7 @@ Amazon Relational Database Service is a web service that makes it easier to set 
 
 ## Pipeline architecture
 
-![](media/doc/pinterest_architecture_diagram.drawio.svg)
+![](media/doc/pinterest_architecture_diagram.drawio.png)
 
 ## File structure of the project
 
