@@ -88,6 +88,7 @@ Amazon Relational Database Service is a web service that makes it easier to set 
 ## 📂 File structure of the project
 
 1. **Project Log:** Contains a journey log of all steps taken.
+
 2. **user_posting_emulation.py :** A script which emulates the stream of POST requests by users on Pinterest.   
 Contains the following : 
     - AWSDBConnector : (Class) Connects to an AWS RDS database  
@@ -98,14 +99,19 @@ Contains the following :
     - api_send_to_kafka : (Function) Send data to Kafka using the specified API.
     - api_send_to_kinesis : (Function) Send data to Kinesis using the specified API.
 
+3. **user_posting_emulation_batch.py :** A script to post user, geo, and pin data to Kafka.
+    - kafka_post: (Function) Calls api_send_to_kafka. Posts data to Kafka topics using the specified API endpoints.
 
-3. user_posting_emulation_batch.py : A script to post user, geo, and pin data to Kafka.
-    - kafka_post: (Function) Calls api_send_to_kafka. Posts data to Kafka topics using the specified API endpoints.    
-4. user_posting_emulation_streaming.py : A script to post user, geo, and pin data to Kinesis.
+4. **user_posting_emulation_streaming.py :** A script to post user, geo, and pin data to Kinesis.
     - kinesis_stream_post : (Function) Calls api_send_to_kinesis function. Posts data to Kinesis streams using the specified API endpoints.
-5. data_frame_creation_from_s3_bucket.ipynb : Databricks notebook to authenticate, mount s3 bucket, and create dataframes.  
-6. cleaning_df_batch_data.ipynb : Databricks notebook to clean batch dataframes. 
-7. querying_batch_data.ipynb : Databricks notebook to query batch data.
+
+5. **data_frame_creation_from_s3_bucket.ipynb :** Databricks notebook to authenticate, mount s3 bucket, and create dataframes.
+
+6. **cleaning_df_batch_data.ipynb :** Databricks notebook to clean batch dataframes. 
+
+7. **querying_batch_data.ipynb :** Databricks notebook to query batch data.
+
+**Note: Restructuring into modular format replacing 5,6,7, new files to include - pinterest_authenticate_aws, mount_s3_bucket, cleaning_utils, pinterest_streaming_data , pinterest_batch_data**
 
 
 ## 📄 Data 
