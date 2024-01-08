@@ -27,7 +27,7 @@ This project aims to design an end-to-end pipeline utilising AWS cloud technolog
 
 
 
-## Installation and usage instructions
+## 📦 Installation and usage instructions
    
 ### Installation    
    For conda environment dependencies the `pinterest_pipeline.yaml` can be cloned.  
@@ -81,11 +81,11 @@ Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable computing
 Amazon Relational Database Service is a web service that makes it easier to set up, operate, and scale a relational database in the AWS Cloud. The documentation can be found [here](https://docs.aws.amazon.com/rds/)
  
 
-## Pipeline architecture
+## 💡Pipeline architecture
 
 ![](media/doc/pinterest_architecture_diagram.drawio.png)
 
-## File structure of the project
+## 📂 File structure of the project
 
 1. **Project Log:** Contains a journey log of all steps taken.
 2. **user_posting_emulation.py :** A script which emulates the stream of POST requests by users on Pinterest.   
@@ -108,7 +108,7 @@ Contains the following :
 7. querying_batch_data.ipynb : Databricks notebook to query batch data.
 
 
-## Data 
+## 📄 Data 
 
 Infrastructure similar to what is found if data engineer working at Pinterest. 
 
@@ -133,7 +133,7 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
     {'ind': 7528, 'first_name': 'Abigail', 'last_name': 'Ali', 'age': 20, 'date_joined': datetime.datetime(2015, 10, 24, 11, 23, 51)}
 
 
-## The Pipeline Build  
+## 🛠 The Pipeline Build  
 
 
 #### Details of steps taken can be found in the `project_log.ipynb`file. 
@@ -145,23 +145,36 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 As shown under the [Data](#data) section. 
 
 ### 3. Batch processing: Configuring EC2 Kafka client
-- Create MSK cluster, a client is needed to communicate with this MSK cluster. In this project, an EC2 instance is used to act as the client.
+
+Create an MSK cluster, and connect it to an established EC2 instance which will act as an Apache Kafka client.
+The EC2 client has Kafka, Java and IAM MSK authentication packages installed which allows for the authentication and connection of the EC2 to the MSK cluster. Using the EC2 client, three Kafka topics can now be created.    
+
+- Create an MSK cluster, a client is needed to communicate with this MSK cluster. In this project, an EC2 instance is used to act as the client.
 - Create EC2 instance
-- Use key pair of EC2 instance to create .pem file locally to connect securely to EC2 via SSH
-- In order for the client machine to connect to the cluster, edit the inbound rules for the security group associated with MSK cluster
-- Install Java and Kafka on EC2 client machine 
-- Install IAM MSK authentication package to connect to MSK clusters to authenticate the client
+- Use a key pair of EC2 instance to create .pem file locally to connect securely to EC2 via SSH
+- In order for the client machine to connect to the cluster, edit the inbound rules for the security group associated with the MSK cluster
+- Install Java and Kafka on the EC2 client machine 
+- Install the IAM MSK authentication package to connect to MSK clusters to authenticate the client
 - Configure the client classpath environment variable to be able to use the IAM package
 - Authenticate MSK cluster using EC2 IAM role 
 - Configure Kafka client to use AWS IAM authentication to the cluster
-- Create 3 Kafka topics on the kafka cluster 
+- Create 3 Kafka topics on the Kafka cluster 
+
 
 ### 4. Connect MSK cluster to an S3 bucket
+Next, configure MSK Connect to enable the MSK cluster to automatically transmit and store data to an S3 bucket, that is partitioned by topic. This is achieved by downloading the Confluent.io Amazon S3 Connector and adding it to the S3 bucket through the EC2 client, on the other hand creating a connector in MSK connect by using a custom plugin (which is designed to connect to the S3 bucket).
+
 - Download the Confluent.io Amazon S3 Connector and copy it to the S3 bucket in the EC2 client machine 
-- Create custom plugin in the MSK Connect console
-- Create a connector in MSK connect using custom plugin to connect to S3
+- Create a custom plugin in the MSK Connect console
+- Create a connector in MSK connect using a custom plugin to connect to S3
+
 
 ### 5. Configuring API in API gateway
+
+Construct a REST API within the API gateway with the EC2 network as the endpoint. Then on the EC2 client side, install the Confluent package to listen for requests, which allows the REST proxy API to interact with the Kafka cluster and thus the MSK cluster.
+
+Update the `user_posting_emulation.py` script, to add a function which posts data messages to the cluster via the API gateway and the Kafka REST proxy. Building upon this script, construct a second script `user_posting_emulation_batch.py` to send messages to the EC2 client through three endpoints (one for each topic), consequently sending it to the MSK cluster which is connected to the three topics inside the S3 bucket. 
+
 - Create a REST API
 - Create a resource that allows building a PROXY integration for the API and setup a HTTP any method onto it
 - Deploy the API
@@ -199,6 +212,7 @@ Clean the three dataframes df_pin, df_geo, df_user and query the data on databri
 
 
 ### 8. Batch processing: AWS MWAA 
+
 
 - Create MWAA enviroment linked to an S3 bucket
 - Upload the `0a60b9a8a831_dag.py` directed acyclic graph (DAG) file to the S3 bucket `mwaa-dags-bucket/dags` associated with the MWAA environment. This allows us to run the DAG from the AWS airflow UI
