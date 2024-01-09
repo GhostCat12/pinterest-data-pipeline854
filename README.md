@@ -127,12 +127,13 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
     {'index': 7528, 'unique_id': 'fbe53c66-3442-4773-b19e-d3ec6f54dddf', 'title': 'No Title Data Available', 'description': 'No description available Story format', 'poster_name': 'User Info Error', 'follower_count': 'User Info Error', 'tag_list': 'N,o, ,T,a,g,s, ,A,v,a,i,l,a,b,l,e', 'is_image_or_video': 'multi-video(story page format)', 'image_src': 'Image src error.', 'downloaded': 0, 'save_location': 'Local save in /data/mens-fashion', 'category': 'mens-fashion'}
 
 
-### **geolocation_data :** contains data about the geolocation of each Pinterest post found in pinterest_data
+### **geolocation_data :** contains data about the geolocation of each Pinterest post
 
 > Example data:
 
     {'ind': 7528, 'timestamp': datetime.datetime(2020, 8, 28, 3, 52, 47), 'latitude': -89.9787, 'longitude': -173.293, 'country': 'Albania'}
-### **user_data contains :** data about the user that has uploaded each post found in pinterest_data
+
+### **user_data contains :** data about the user that has uploaded each Pinterest post
 
 > Example data:
 
@@ -155,24 +156,9 @@ As shown under the [Data](#data) section.
 Create an MSK cluster, and connect it to an established EC2 instance which will act as an Apache Kafka client.
 The EC2 client has Kafka, Java and IAM MSK authentication packages installed which allows for the authentication and connection of the EC2 to the MSK cluster. Using the EC2 client, three Kafka topics can now be created.    
 
-- Create an MSK cluster, a client is needed to communicate with this MSK cluster. In this project, an EC2 instance is used to act as the client.
-- Create EC2 instance
-- Use a key pair of EC2 instance to create .pem file locally to connect securely to EC2 via SSH
-- In order for the client machine to connect to the cluster, edit the inbound rules for the security group associated with the MSK cluster
-- Install Java and Kafka on the EC2 client machine 
-- Install the IAM MSK authentication package to connect to MSK clusters to authenticate the client
-- Configure the client classpath environment variable to be able to use the IAM package
-- Authenticate MSK cluster using EC2 IAM role 
-- Configure Kafka client to use AWS IAM authentication to the cluster
-- Create 3 Kafka topics on the Kafka cluster 
-
 
 ### 4. Connect MSK cluster to an S3 bucket
 Next, configure MSK Connect to enable the MSK cluster to automatically transmit and store data to an S3 bucket, that is partitioned by topic. This is achieved by downloading the Confluent.io Amazon S3 Connector and adding it to the S3 bucket through the EC2 client, on the other hand creating a connector in MSK connect by using a custom plugin (which is designed to connect to the S3 bucket).
-
-- Download the Confluent.io Amazon S3 Connector and copy it to the S3 bucket in the EC2 client machine 
-- Create a custom plugin in the MSK Connect console
-- Create a connector in MSK connect using a custom plugin to connect to S3
 
 
 ### 5. Configuring API in API gateway
@@ -181,29 +167,16 @@ Construct a REST API within the API gateway with the EC2 network as the endpoint
 
 Update the `user_posting_emulation.py` script, to add a function which posts data messages to the cluster via the API gateway and the Kafka REST proxy. Building upon this script, construct a second script `user_posting_emulation_batch.py` to send messages to the EC2 client through three endpoints (one for each topic), consequently sending it to the MSK cluster which is connected to the three topics inside the S3 bucket. 
 
-- Create a REST API
-- Create a resource that allows building a PROXY integration for the API and setup a HTTP any method onto it
-- Deploy the API
-- Install Confluent package to setup a REST proxy API on EC2 which listens for requests and interacts with the kafka cluster 
-- Allow the REST proxy to perform IAM authentication to MSK cluster by modifying the kafka-rest.properties file
-- Start the REST proxy on the EC2 client machine
-- By running user_posting_emulation_batch_data.py which posts data messages to the cluster via the API gateway and the kafka REST proxy
-
 
 ### 6. Mount AWS S3 bucket onto Databricks
 
-In order to clean and query the batch data, mounting the S3 bucket on Databricks is required. Therefore, `data_frame_creation_from_s3_bucket.ipynb` was run in Databricks: 
-
-1. Read the credentials .csv into a Sparks dataframe
-2. Create variables using AWS access key and secret key from the spark dataframe
-3. Mount the S3 bucket using credentials
-4. Create three Spark dataframes, one for each topic (user, pin, and geo)
-5. Read the .json files into three Spark dataframes
-
+In order to clean and query the batch data, mounting the S3 bucket on Databricks is required. Therefore, a notebook `pinterest_autenticate_aws` was created to read and extract the delta table containg the AWS keys to Databricks sparks dataframe, 
+and another notebook 'mount_S3_bucket was created to house a mounting function to mount the S3 bucket to Databricks. 
+The third notebook `pinterest_batch_data` reads the json data from the s3 bucket topics and creates three Spark dataframes, one for each topic (user, pin, and geo).
 
 ### 7. Clean and query the data on databricks: 
 
-Clean the three dataframes df_pin, df_geo, df_user and query the data on databricks using pyspark. Detailed steps on cleaning can be found in `cleaning_df_batch_data.ipynb` file. Detailed steps on queries can be seen in `querying_batch_data.ipynb` file.
+Clean the three dataframes df_pin, df_geo, df_user and query the data on databricks using pyspark. Detailed steps on the cleaning function can be found in `cleaning_utils` notebook. THe cleaning function is run inside the `piterest_batch_data` notebook, it also houses code on the queries.
 
 #### Queries were as follows:
 
@@ -219,10 +192,7 @@ Clean the three dataframes df_pin, df_geo, df_user and query the data on databri
 
 ### 8. Batch processing: AWS MWAA 
 
-
-- Create MWAA enviroment linked to an S3 bucket
-- Upload the `0a60b9a8a831_dag.py` directed acyclic graph (DAG) file to the S3 bucket `mwaa-dags-bucket/dags` associated with the MWAA environment. This allows us to run the DAG from the AWS airflow UI
-- Utilise AWS Managed Workflows for Apache Airflow (MWAA) to automate **daily** batch processing of the previously created databricks notebook. 
+Orchestrate Databricks workloads on AWS MWAA by uploading `0a60b9a8a831_dag.py`, a Directed Acyclic Graph (DAG) to an AWS MWAA environment via its associated S3 bucket, `mwaa-dags-bucket/dags`. This initiates @daily execution.
 
 ### 9. Stream Processing: AWS Kinesis
 
