@@ -196,20 +196,13 @@ Orchestrate Databricks workloads on AWS MWAA by uploading `0a60b9a8a831_dag.py`,
 
 ### 9. Stream Processing: AWS Kinesis
 
-1. Create 3 streams each sourcing data from one the 3 Pinterest data tables :     
-    - streaming-0a60b9a8a831-pin  
-    - streaming-0a60b9a8a831-geo    
-    - streaming-0a60b9a8a831-user 
-2. Configure your previously created REST API to allow it to invoke Kinesis actions
-3. API should be able to invoke the following actions:
-    - List streams in Kinesis
-    - Create, describe and delete streams in Kinesis
-    - Add records to streams in Kinesis
-
-4. Create a new script user_posting_emulation_streaming.py to send requests to the API, which adds one tables record at a time to the coresponding kinesis streams created.
-5. Read data from Kinesis streams into Databricks
-6. Clean the streaming data in the same way as the batch data
-7. Write streaming data into Databricks delta tables
+Moving on to processing streaming data. Three data streams can be created on AWS Kinesis, one for each of the tables pin, user, and geo. Modify the previously created REST API to invoke Kinesis actions to 
+1. List steams in Kinesis 
+2. Create, describe and delete streams in Kinesis 
+3. Append records to Kinesis 
+To send requests to this REST API, the `user_posting_emulation.py` script was modified to include an api_send_to_kinesis function and a `user_posting_emulation_streaming.py` script to send messages to Kinesis through three endpoints (one for each topic), 
+this adds one record at a time to the corresponding Kinesis streams.
+Using the notebook `pinterest_steaming_data`, this data can then be read inside Databricks, cleaned and converted into Delta tables for a live overview.  
 
 
 ## License information
