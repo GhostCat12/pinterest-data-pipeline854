@@ -5,6 +5,9 @@
 
 This project aims to design an end-to-end pipeline utilising AWS cloud technologies and Databricks for analysing real-time and historical pinterest-emulated data.
 
+##### Fixes To Do : 
+1. Image links in project_log.ipynb are curerntly broken
+
 ## Table of Contents
 
 #### <img src="media/doc/one.svg" width="24"> [Installation and usage instructions](#installation-and-usage-instructions)    
