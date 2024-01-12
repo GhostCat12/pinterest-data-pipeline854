@@ -1,13 +1,14 @@
-import boto3
+
 import datetime
+import json
 import requests
 import random
-import json
 import sqlalchemy
 
 from multiprocessing import Process
-from time import sleep
 from sqlalchemy import text
+from time import sleep
+
 
 
 random.seed(100)
