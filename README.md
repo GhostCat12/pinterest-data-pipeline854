@@ -12,21 +12,21 @@ This project aims to design an end-to-end pipeline utilising AWS cloud technolog
 
 #### <img src="media/doc/one.svg" width="24"> [Installation and usage instructions](#installation-and-usage-instructions)    
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Installation](#installation)    
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Tools and dependencies](https://github.com/GhostCat12/pinterest-data-pipeline854#tools-and-dependencies)      
-#### <img src="media/doc/two.svg" width="24"> [Pipeline architecture](https://github.com/GhostCat12/pinterest-data-pipeline854#pipeline-architecture)
-#### <img src="media/doc/three.svg" width="24"> [File structure of the project](https://github.com/GhostCat12/pinterest-data-pipeline854#file-structure-of-the-project)
-#### <img src="media/doc/four.svg" width="24"> [Data](https://github.com/GhostCat12/pinterest-data-pipeline854#data)
-#### <img src="media/doc/five.svg" width="24"> [The Pipeline Build](https://github.com/GhostCat12/pinterest-data-pipeline854#the-pipeline-build)
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Setting up project environment]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Exploring the Pinterest emulation data]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Batch processing: Configuring EC2 Kafka client]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Connect MSK cluster to an S3 bucket]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Configuring API in API gateway]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Mount AWS S3 bucket onto Databricks]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Clean and query the data on databricks]()
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Batch processing: AWS MWAA]() 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Stream Processing: AWS Kinesis]()
-#### <img src="media/doc/six.svg" width="24"> [License information](https://github.com/GhostCat12/pinterest-data-pipeline854#license-information)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Tools and dependencies](#tools-and-dependencies)      
+#### <img src="media/doc/two.svg" width="24"> [Pipeline architecture](#pipeline-architecture)
+#### <img src="media/doc/three.svg" width="24"> [File structure of the project](#file-structure-of-the-project)
+#### <img src="media/doc/four.svg" width="24"> [Data](#data)
+#### <img src="media/doc/five.svg" width="24"> [The Pipeline Build](#the-pipeline-build)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Setting up project environment](#1-setting-up-project-environment)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Exploring the Pinterest emulation data](#2-exploring-the-pinterest-emulation-data)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Batch processing: Configuring EC2 Kafka client](#3-batch-processing-configuring-ec2-kafka-client)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Connect MSK cluster to an S3 bucket](#4-connect-msk-cluster-to-an-s3-bucket)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Configuring API in API gateway](#5-configuring-api-in-api-gateway)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Mount AWS S3 bucket onto Databricks](#6-mount-aws-s3-bucket-onto-databricks)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Clean and query the data on databricks](#7-clean-and-query-the-data-on-databricks)
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Batch processing: AWS MWAA](#8-batch-processing-aws-mwaa) 
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Stream Processing: AWS Kinesis](#9-stream-processing-aws-kinesis)
+#### <img src="media/doc/six.svg" width="24"> [License information](#license-information)
 
 
 
@@ -90,31 +90,35 @@ Amazon Relational Database Service is a web service that makes it easier to set 
 
 ## 📂 File structure of the project
 
-1. **Project Log:** Contains a journey log of all steps taken.
+1. **project_log.ipynb:** Contains a journey log of all steps taken.
+2. **user_posting_emulation.py:** A script which emulates the stream of POST requests by users on Pinterest.   
+    - AWSDBConnector (class): Connects to an AWS RDS database  
+        - create_db_connector (method):  Creates and returns a SQLAlchemy engine for the database connection. 
+    - map_select_row (function):  Select a random row from the specified table in the database
+    - convert_datetime (function):  Convert datetime values in the dictionary to formatted strings.
+    - run_infinite_post_data_loop (Wrapper):  Decorator function for running an infinite loop to post data.
+    - api_send_to_kafka (function):  Send data to Kafka using the specified API.
+    - api_send_to_kinesis (function):  Send data to Kinesis using the specified API.
+3. **user_posting_emulation_batch.py:** A script to post user, geo, and pin data to Kafka.
+    - kafka_post (function):  Calls api_send_to_kafka. Posts data to Kafka topics using the specified API endpoints.
+4. **user_posting_emulation_streaming.py:** A script to post user, geo, and pin data to Kinesis.
+    - kinesis_stream_post (function):  Calls api_send_to_kinesis function. Posts data to Kinesis streams using the specified API endpoints.
+5. **pinterest_authenticate_aws.ipynb:** Databricks notebook to retrieve authentication keys 
+    - authentication (function):  Reads delta table and extracts AWS authentication keys. 
+6. **mount_s3_bucket.ipynb:** Databricks notebook to mount s3 bucket, 
 
-2. **user_posting_emulation.py :** A script which emulates the stream of POST requests by users on Pinterest.   
-Contains the following : 
-    - AWSDBConnector : (Class) Connects to an AWS RDS database  
-        - create_db_connector : (Method) Creates and returns a SQLAlchemy engine for the database connection. 
-    - map_select_row : (Function) Select a random row from the specified table in the database
-    - convert_datetime: (Function) Convert datetime values in the dictionary to formatted strings.
-    - run_infinite_post_data_loop : (Wrapper) Decorator function for running an infinite loop to post data.
-    - api_send_to_kafka : (Function) Send data to Kafka using the specified API.
-    - api_send_to_kinesis : (Function) Send data to Kinesis using the specified API.
+7. **cleaning_utils.ipynb:** Databricks notebook housing three dataframe cleaning functions.
+    - clean_df_pin (function): Cleans df_pin dataframe and returns cleaned dataframe.
+    - clean_df_geo (function): Cleans df_geo dataframe and returns cleaned dataframe.
+    - clean_df_user (function): Cleans df_user dataframe and returns cleaned dataframe.
 
-3. **user_posting_emulation_batch.py :** A script to post user, geo, and pin data to Kafka.
-    - kafka_post: (Function) Calls api_send_to_kafka. Posts data to Kafka topics using the specified API endpoints.
+6. **pinterest_batch_data.ipynb:** Uses the authenticate function, reads data from the mounted s3 bucket, utilises clean_data function, and houses all batch data queries.
 
-4. **user_posting_emulation_streaming.py :** A script to post user, geo, and pin data to Kinesis.
-    - kinesis_stream_post : (Function) Calls api_send_to_kinesis function. Posts data to Kinesis streams using the specified API endpoints.
+7. **pinterest_streaming_data.ipynb:** Uses the authenticate function, reads kinesis streams, utilises clean_data function, and writes cleaned data to Delta tables.
+    - read_kinesis_stream (function): Read and deserialise the streaming data from Kinesis
+    - store_as_delta (function): Writing the streams to Databricks Delta tables.
+ 
 
-5. **data_frame_creation_from_s3_bucket.ipynb :** Databricks notebook to authenticate, mount s3 bucket, and create dataframes.
-
-6. **cleaning_df_batch_data.ipynb :** Databricks notebook to clean batch dataframes. 
-
-7. **querying_batch_data.ipynb :** Databricks notebook to query batch data.
-
-**Note: Restructuring into modular format replacing 5,6,7, new files to include - pinterest_authenticate_aws, mount_s3_bucket, cleaning_utils, pinterest_streaming_data , pinterest_batch_data**
 
 
 ## 📄 Data 
