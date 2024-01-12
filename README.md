@@ -168,13 +168,13 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 
 </div>
 
-## 🛠 The Pipeline Build  
+## 🛠 The pipeline build  
 
 
-#### Details of steps taken can be found in the `project_log.ipynb`file. 
+#### The pipeline can be sectioned into Pinterest emulations, batch processing and stream processing. Details of steps taken can be found in the `project_log.ipynb`file. 
 
 ### 1. Setting up project environment
-    - Setup a conda enviroment and install required libraires 
+    - Setup a conda enviroment and install required libraries 
 
 ### 2. Exploring the Pinterest emulation data. 
 As shown under the [Data](#-data-1) section. 
@@ -185,24 +185,24 @@ Create an MSK cluster, and connect it to an established EC2 instance which will 
 The EC2 client has Kafka, Java and IAM MSK authentication packages installed which allows for the authentication and connection of the EC2 to the MSK cluster. Using the EC2 client, three Kafka topics can now be created.    
 
 
-### 4. Connect MSK cluster to an S3 bucket
+### 4. Batch processing: Connect MSK cluster to an S3 bucket
 Next, configure MSK Connect to enable the MSK cluster to automatically transmit and store data to an S3 bucket, that is partitioned by topic. This is achieved by downloading the Confluent.io Amazon S3 Connector and adding it to the S3 bucket through the EC2 client, on the other hand creating a connector in MSK connect by using a custom plugin (which is designed to connect to the S3 bucket).
 
 
-### 5. Configuring API in API gateway
+### 5. Batch processing: Configuring API in API gateway
 
 Construct a REST API within the API gateway with the EC2 network as the endpoint. Then on the EC2 client side, install the Confluent package to listen for requests, which allows the REST proxy API to interact with the Kafka cluster and thus the MSK cluster.
 
 Update the `user_posting_emulation.py` script, to add a function which posts data messages to the cluster via the API gateway and the Kafka REST proxy. Building upon this script, construct a second script `user_posting_emulation_batch.py` to send messages to the EC2 client through three endpoints (one for each topic), consequently sending it to the MSK cluster which is connected to the three topics inside the S3 bucket. 
 
 
-### 6. Mount AWS S3 bucket onto Databricks
+### 6. Batch processing: Mount AWS S3 bucket onto Databricks
 
 In order to clean and query the batch data, mounting the S3 bucket on Databricks is required. Therefore, a notebook `pinterest_autenticate_aws` was created to read and extract the delta table containg the AWS keys to Databricks sparks dataframe, 
 and another notebook 'mount_S3_bucket was created to house a mounting function to mount the S3 bucket to Databricks. 
 The third notebook `pinterest_batch_data` reads the json data from the s3 bucket topics and creates three Spark dataframes, one for each topic (user, pin, and geo).
 
-### 7. Clean and query the data on databricks: 
+### 7. Batch processing: Clean and query the data on databricks: 
 
 Clean the three dataframes df_pin, df_geo, df_user and query the data on databricks using pyspark. Detailed steps on the cleaning function can be found in `cleaning_utils` notebook. THe cleaning function is run inside the `piterest_batch_data` notebook, it also houses code on the queries.
 
@@ -222,7 +222,7 @@ Clean the three dataframes df_pin, df_geo, df_user and query the data on databri
 
 Orchestrate Databricks workloads on AWS MWAA by uploading `0a60b9a8a831_dag.py`, a Directed Acyclic Graph (DAG) to an AWS MWAA environment via its associated S3 bucket, `mwaa-dags-bucket/dags`. This initiates @daily execution.
 
-### 9. Stream Processing: AWS Kinesis
+### 9. Stream processing: AWS Kinesis
 
 Moving on to processing streaming data. Three data streams can be created on AWS Kinesis, one for each of the tables pin, user, and geo. Modify the previously created REST API to invoke Kinesis actions to 
 1. List steams in Kinesis 
@@ -232,6 +232,17 @@ Moving on to processing streaming data. Three data streams can be created on AWS
 To send requests to this REST API, the `user_posting_emulation.py` script was modified to include an api_send_to_kinesis function and a `user_posting_emulation_streaming.py` script to send messages to Kinesis through three endpoints (one for each topic), 
 this adds one record at a time to the corresponding Kinesis streams.
 Using the notebook `pinterest_steaming_data`, this data can then be read inside Databricks, cleaned and converted into Delta tables for a live overview.  
+
+<div align="right">
+
+[Back to top](#pinterest-data-pipeline)
+
+</div>
+
+## Looking forward
+
+1. To enhance scalability, the pinterest_batch_data notebook currently experiences extended run-time. A potential improvement involves optimizing performance by transforming the existing dataframes into Delta tables.
+2. Following the completion of the final Databricks conversions, exploring the data through industry-standard visualization tools like Power BI or Tableau can enhance the overall analytical insights.
 
 <div align="right">
 
