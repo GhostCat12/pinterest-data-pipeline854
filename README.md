@@ -31,10 +31,16 @@ This project aims to design an end-to-end pipeline utilising AWS cloud technolog
 ## 📦 Installation and usage instructions
    
 ### Installation    
-   For conda environment dependencies the `pinterest_pipeline.yaml` can be cloned.  
+     
+This project was run in a conda environment on Linux Ubuntu 22.04.3 LTS (Jammy Jellyfish). 
 
-    conda env create -f pinterest_pipeline.yaml
-    conda activate pinterest_pipeline 
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) (recommended) or [Anaconda](https://www.anaconda.com/products/distribution) can be downloded depending on your operating system. 
+
+For conda environment dependencies the `pinterest_conda_env.yml` can be cloned to recreate the environment.
+
+    conda env create -f pinterest_conda_env.yml
+    conda activate pinterest_conda_env
+
    
 **Note:** Due to confidential information for AWS and Databricks account access, this project cannot be run by others directly, however can function as a step by step guide on replicating the pipeline.  
 
@@ -175,16 +181,7 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 
 ### 1. Setting up project environment
 
-This project was run in a conda environment on Linux Ubuntu 22.04.3 LTS (Jammy Jellyfish). 
-
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html) (recommended) or [Anaconda](https://www.anaconda.com/products/distribution) can be downloded depending on your operating system. 
-
-The `pinterest_conda_env.yml` file can be used to recreate the conda environment installing the necessary libraries: 
-
-    conda env create -f pinterest_conda_env.yml
-    conda activate pinterest_conda_env
-
-
+Create a conda environment and install required libraries.
 
 ### 2. Exploring the Pinterest emulation data. 
 As shown under the [Data](#-data-1) section. 
