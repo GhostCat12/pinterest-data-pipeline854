@@ -177,7 +177,7 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
     - Setup a conda enviroment and install required libraires 
 
 ### 2. Exploring the Pinterest emulation data. 
-As shown under the [Data](#data) section. 
+As shown under the [Data](#-data-1) section. 
 
 ### 3. Batch processing: Configuring EC2 Kafka client
 
