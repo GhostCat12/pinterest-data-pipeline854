@@ -214,6 +214,7 @@ Using the notebook `pinterest_steaming_data`, this data can then be read inside 
 
 
 ## License information
+GNU General Public License (GPL) v3.0
 
 
 
