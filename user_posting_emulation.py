@@ -100,13 +100,14 @@ def run_infinite_post_data_loop(func):
             random_row = random.randint(0, 11000)
             engine = new_connector.create_db_connector()
 
-            with engine.connect() as connection:  #
-            
+            with engine.connect() as connection:
+
+                # Runs function to select random row for each RDS table and converts into dictionary format. 
                 pin_result = map_select_row(connection, random_row, 'pinterest_data')
                 geo_result = map_select_row(connection, random_row, 'geolocation_data')
                 user_result = map_select_row(connection, random_row, 'user_data')
 
-            #
+                # Runs function to convert datetime into string format.
                 geo_result = convert_datetime(geo_result)
                 user_result = convert_datetime(user_result)
                 
@@ -128,16 +129,17 @@ def api_send_to_kafka(invoke_url, header, table_dict):
         None
     """
       
-	#To send JSON messages of table_dict
+    # To send JSON messages of table_dict
     payload_json = json.dumps({
             "records": [
                 {
-                # Data should be sent as pairs of column_name:value, with different columns separated by commas        
+                # Data sent as pairs of column_name:value, with different columns separated by commas        
                 "value": table_dict
                 }
                 ]
         })
-
+    
+    # Make a POST request to the API with the prepared payload
     response_result = requests.request(method="POST", url=invoke_url, headers=header, data=payload_json)
     print(response_result.status_code)
 
@@ -154,23 +156,15 @@ def api_send_to_kinesis(invoke_url, header, table_dict, partition_key):
 
         Returns:
             None
-        """   
-    # To send JSON messages you need to follow this structure
+        """ 
+      
+    # To send JSON messages, structuring the payload accordingly
     payload_json = json.dumps({
         "StreamName": f"streaming-0a60b9a8a831-{partition_key}",
         "Data": table_dict,
         "PartitionKey": partition_key
     })
 
+    # Make a PUT request to the API with the prepared payload
     response_result = requests.request(method="PUT", url=invoke_url, headers=header, data=payload_json)
     print(response_result.status_code)
-
-
-
-#if __name__ == "__main__":
-    #print(run_infinite_post_data_loop())
-    #print('Working')
-    
-    
-
-
