@@ -5,8 +5,6 @@
 
 This project aims to design an end-to-end pipeline utilising AWS cloud technologies and Databricks for analysing real-time and historical pinterest-emulated data.
 
-##### Fixes To Do : 
-1. Image links in project_log.ipynb are curerntly broken
 
 ## Table of Contents
 
@@ -82,11 +80,25 @@ Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable computing
 
 - **AWS RDS :**  
 Amazon Relational Database Service is a web service that makes it easier to set up, operate, and scale a relational database in the AWS Cloud. The documentation can be found [here](https://docs.aws.amazon.com/rds/)
- 
+
+
+
+<div align="right">
+
+[Back to top](#pinterest-data-pipeline)
+
+</div> 
 
 ## 💡Pipeline architecture
 
 ![](media/doc/pinterest_architecture_diagram.drawio.png)
+
+
+<div align="right">
+
+[Back to top](#pinterest-data-pipeline)
+
+</div>
 
 ## 📂 File structure of the project
 
@@ -118,7 +130,11 @@ Amazon Relational Database Service is a web service that makes it easier to set 
     - read_kinesis_stream (function): Read and deserialise the streaming data from Kinesis
     - store_as_delta (function): Writing the streams to Databricks Delta tables.
  
+<div align="right">
 
+[Back to top](#pinterest-data-pipeline)
+
+</div>
 
 
 ## 📄 Data 
@@ -146,6 +162,11 @@ user_posting_emulation.py, that contains the login credentials for a RDS databas
 
     {'ind': 7528, 'first_name': 'Abigail', 'last_name': 'Ali', 'age': 20, 'date_joined': datetime.datetime(2015, 10, 24, 11, 23, 51)}
 
+<div align="right">
+
+[Back to top](#pinterest-data-pipeline)
+
+</div>
 
 ## 🛠 The Pipeline Build  
 
@@ -212,10 +233,19 @@ To send requests to this REST API, the `user_posting_emulation.py` script was mo
 this adds one record at a time to the corresponding Kinesis streams.
 Using the notebook `pinterest_steaming_data`, this data can then be read inside Databricks, cleaned and converted into Delta tables for a live overview.  
 
+<div align="right">
+
+[Back to top](#pinterest-data-pipeline)
+
+</div>
 
 ## License information
 GNU General Public License (GPL) v3.0
 
+<div align="right">
 
+[Back to top](#pinterest-data-pipeline)
+
+</div>
 
 
