@@ -41,6 +41,11 @@ For conda environment dependencies the `pinterest_conda_env.yml` can be cloned t
     conda env create -f pinterest_conda_env.yml
     conda activate pinterest_conda_env
 
+For those not utilising a conda environment, this project depends on the following modules: 
+- `pymysql`
+- `requests`
+- `sqlalchemy`
+
    
 **Note:** Due to confidential information for AWS and Databricks account access, this project cannot be run by others directly, however can function as a step by step guide on replicating the pipeline.  
 
