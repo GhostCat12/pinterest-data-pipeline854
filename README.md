@@ -13,7 +13,7 @@ This project aims to design an end-to-end pipeline utilising AWS cloud technolog
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Tools and dependencies](#tools-and-dependencies)      
 #### <img src="media/doc/two.svg" width="24"> [Pipeline architecture](#pipeline-architecture)
 #### <img src="media/doc/three.svg" width="24"> [File structure of the project](#file-structure-of-the-project)
-#### <img src="media/doc/four.svg" width="24"> [Data](#data)
+#### <img src="media/doc/four.svg" width="24"> [Data](#-data-1)
 #### <img src="media/doc/five.svg" width="24"> [The Pipeline Build](#the-pipeline-build)
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Setting up project environment](#1-setting-up-project-environment)
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="media/doc/circle.svg" width="8"> &nbsp;&nbsp;&nbsp;&nbsp;[Exploring the Pinterest emulation data](#2-exploring-the-pinterest-emulation-data)
